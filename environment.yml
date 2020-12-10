@@ -20,9 +20,9 @@ dependencies:
     - statsmodels
     - numba
     - pytables
-    - conda-forge::python-igraph
-    - conda-forge::leidenalg
-    - conda-forge::umap-learn
+    - conda-forge::python-igraph=0.8.3
+    - conda-forge::leidenalg=0.8.3
+    - conda-forge::umap-learn=0.4.6
     - matplotlib
     - pandas
     - pip
@@ -31,5 +31,5 @@ dependencies:
       - tensorflow_datasets==3.2.1
       - pycuda==2019.1.2  # not on Conda
       - system-intelligence==1.2.4  # not yet on Conda
-      - scanpy
+      - scanpy==1.6.0
       

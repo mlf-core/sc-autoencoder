@@ -11,6 +11,7 @@ from mlf_core.mlf_core import log_sys_intel_conda_env, set_general_random_seeds
 from data_loading.data_loader import load_data
 from model.model import create_model
 from training.train import train, test
+from tensorflow.keras.mixed_precision import experimental as mixed_precision
 
 
 @click.command()
@@ -21,10 +22,16 @@ from training.train import train, test
 @click.option('--batch-size', type=int, default=64, help='Input batch size for training and testing')
 @click.option('--buffer-size', type=int, default=10000, help='Buffer size for Mirrored Training')
 @click.option('--learning-rate', type=float, default=0.01, help='Learning rate')
-def start_training(cuda, epochs, general_seed, tensorflow_seed, batch_size, buffer_size, learning_rate):
+@click.option('--mixed-precision', type=bool, default=False, help="Enable mixed precision training")
+def start_training(cuda, epochs, general_seed, tensorflow_seed, batch_size, buffer_size, learning_rate, mixed_precision):
     # Disable GPU support if no GPUs are supposed to be used
     if not cuda:
         tf.config.set_visible_devices([], 'GPU')
+
+    # Enable mixed precision training
+    if mixed_precision:
+        policy = mixed_precision.Policy('mixed_float16')
+        mixed_precision.set_policy(policy)
 
     with mlflow.start_run():
         # Enable the logging of all parameters, metrics and models to mlflow and Tensorboard
@@ -76,7 +83,7 @@ def set_tensorflow_random_seeds(seed):
     tf.random.set_seed(seed)
     tf.config.threading.set_intra_op_parallelism_threads = 1  # CPU only
     tf.config.threading.set_inter_op_parallelism_threads = 1  # CPU only
-    #os.environ['TF_DETERMINISTIC_OPS'] = '1'
+    os.environ['TF_DETERMINISTIC_OPS'] = '1'
 
 
 if __name__ == '__main__':
