@@ -20,16 +20,19 @@ def train(model, epochs, train_dataset):
     model.load_weights(tf.train.latest_checkpoint(checkpoint_dir))
 
 
-def test(model, eval_dataset, save_path="embedding.png"):
+def test(model, eval_dataset, save_path="embedding"):
 
     # Get latent space encoding
     res = np.array(model.encode(eval_dataset))
+
+    res_df = pd.DataFrame(res)
+    res_df.to_csv(save_path + ".csv")
 
     # Reduce with UMAP
     reducer = umap.UMAP(random_state=42)
     embedding = reducer.fit_transform(res)
     df = pd.DataFrame(embedding, columns=['PC1', 'PC2'])
     plt.scatter(df['PC1'], df['PC2'])
-    plt.savefig(save_path)
+    plt.savefig(save_path + ".png")
 
     return save_path

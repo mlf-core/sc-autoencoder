@@ -35,7 +35,7 @@ def start_training(cuda, epochs, general_seed, tensorflow_seed, batch_size, buff
 
     with mlflow.start_run():
         # Enable the logging of all parameters, metrics and models to mlflow and Tensorboard
-        mlflow.tensorflow.autolog()
+        mlflow.tensorflow.autolog(every_n_iter=1)
 
         # Fix all random seeds and Tensorflow specific reproducibility settings
         set_general_random_seeds(general_seed)
@@ -53,6 +53,7 @@ def start_training(cuda, epochs, general_seed, tensorflow_seed, batch_size, buff
         input_dim = 0
         for elem in dataset:
             input_dim = elem[0].shape[1]
+            break
 
         with strategy.scope():
             # Define model and compile model
@@ -62,12 +63,13 @@ def start_training(cuda, epochs, general_seed, tensorflow_seed, batch_size, buff
                           metrics=['mse'])
 
             model.build(input_shape=(batch_size, input_dim))
-            #mlflow.tensorflow.save_model(tf_saved_model_dir="model")
             # Train and evaluate the trained model
             runtime = time.time()
             train(model, epochs, dataset)
             embedding = test(model, test_data, save_path="embedding.png")
-            mlflow.log_artifact(embedding)
+            mlflow.log_artifact(embedding + ".png")
+            mlflow.log_artifact(embedding + ".csv")
+
 
             device = 'GPU' if cuda else 'CPU'
             click.echo(click.style(f'{device} Run Time: {str(time.time() - runtime)} seconds', fg='green'))

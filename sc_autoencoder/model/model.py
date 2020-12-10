@@ -32,7 +32,7 @@ class Autoencoder(tf.keras.Model):
     
     def encode(self, x):
         return self.encoder(x)
-
+    
 
 def create_model(input_shape):
     model = Autoencoder(input_dim=input_shape, layer_sizes=[256, 128, 64], latent_size=50)
