@@ -11,7 +11,7 @@ from mlf_core.mlf_core import log_sys_intel_conda_env, set_general_random_seeds
 from data_loading.data_loader import load_data
 from model.model import create_model
 from training.train import train, test
-from tensorflow.keras.mixed_precision import experimental as mixed_precision
+from tensorflow.keras.mixed_precision import experimental as mp
 
 
 @click.command()
@@ -30,8 +30,8 @@ def start_training(cuda, epochs, general_seed, tensorflow_seed, batch_size, buff
 
     # Enable mixed precision training
     if mixed_precision:
-        policy = mixed_precision.Policy('mixed_float16')
-        mixed_precision.set_policy(policy)
+        policy = mp.Policy('mixed_float16')
+        mp.set_policy(policy)
 
     with mlflow.start_run():
         # Enable the logging of all parameters, metrics and models to mlflow and Tensorboard
@@ -56,6 +56,7 @@ def start_training(cuda, epochs, general_seed, tensorflow_seed, batch_size, buff
             break
 
         with strategy.scope():
+
             # Define model and compile model
             model = create_model(input_shape=input_dim)
             model.compile(loss=tf.keras.losses.MeanSquaredError(),
@@ -85,7 +86,7 @@ def set_tensorflow_random_seeds(seed):
     tf.random.set_seed(seed)
     tf.config.threading.set_intra_op_parallelism_threads = 1  # CPU only
     tf.config.threading.set_inter_op_parallelism_threads = 1  # CPU only
-    os.environ['TF_DETERMINISTIC_OPS'] = '1'
+    #os.environ['TF_DETERMINISTIC_OPS'] = '1'
 
 
 if __name__ == '__main__':
