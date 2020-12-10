@@ -1,4 +1,4 @@
-name: Train sc_autoencoder using CPU
+name: Train sc-autoencoder using CPU
 
 on: [push, pull_request]
 
