@@ -1,5 +1,9 @@
 import tensorflow as tf
 import os
+import umap
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
 
 
 def train(model, epochs, train_dataset):
@@ -16,7 +20,16 @@ def train(model, epochs, train_dataset):
     model.load_weights(tf.train.latest_checkpoint(checkpoint_dir))
 
 
-def test(model, eval_dataset):
-    eval_loss, eval_acc = model.evaluate(eval_dataset)
+def test(model, eval_dataset, save_path="embedding.png"):
 
-    return eval_loss, eval_acc
+    # Get latent space encoding
+    res = np.array(model.encode(eval_dataset))
+
+    # Reduce with UMAP
+    reducer = umap.UMAP(random_state=42)
+    embedding = reducer.fit_transform(res)
+    df = pd.DataFrame(embedding, columns=['PC1', 'PC2'])
+    plt.scatter(df['PC1'], df['PC2'])
+    plt.savefig(save_path)
+
+    return save_path

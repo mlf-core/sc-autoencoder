@@ -8,14 +8,14 @@ import time
 from rich import traceback
 
 from mlf_core.mlf_core import log_sys_intel_conda_env, set_general_random_seeds
-from data_loading.data_loader import load_train_test_data
+from data_loading.data_loader import load_data
 from model.model import create_model
 from training.train import train, test
 
 
 @click.command()
 @click.option('--cuda', type=bool, default=True, help='Enable or disable CUDA support')
-@click.option('--epochs', type=int, default=10, help='Number of epochs to train')
+@click.option('--epochs', type=int, default=2, help='Number of epochs to train')
 @click.option('--general-seed', type=int, default=0, help='General Python, Python random and Numpy seed.')
 @click.option('--tensorflow-seed', type=int, default=0, help='Tensorflow specific random seed.')
 @click.option('--batch-size', type=int, default=64, help='Input batch size for training and testing')
@@ -39,20 +39,28 @@ def start_training(cuda, epochs, general_seed, tensorflow_seed, batch_size, buff
         click.echo(click.style(f'Number of devices: {strategy.num_replicas_in_sync}', fg='blue'))
 
         # Fetch and prepare dataset
-        train_dataset, eval_dataset = load_train_test_data(strategy, batch_size, buffer_size, tensorflow_seed)
+        dataset, test_data = load_data(strategy, batch_size, buffer_size, tensorflow_seed)
+
+        # Get the input dimension
+        # TODO: find a nicer, less ugly way of doing this
+        input_dim = 0
+        for elem in dataset:
+            input_dim = elem[0].shape[1]
 
         with strategy.scope():
             # Define model and compile model
-            model = create_model(input_shape=(28, 28, 1))
-            model.compile(loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+            model = create_model(input_shape=input_dim)
+            model.compile(loss=tf.keras.losses.MeanSquaredError(),
                           optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate),
-                          metrics=['accuracy'])
+                          metrics=['mse'])
 
+            model.build(input_shape=(batch_size, input_dim))
+            #mlflow.tensorflow.save_model(tf_saved_model_dir="model")
             # Train and evaluate the trained model
             runtime = time.time()
-            train(model, epochs, train_dataset)
-            eval_loss, eval_acc = test(model, eval_dataset)
-            click.echo(f'Test loss: {eval_loss}, Test Accuracy: {eval_acc}')
+            train(model, epochs, dataset)
+            embedding = test(model, test_data, save_path="embedding.png")
+            mlflow.log_artifact(embedding)
 
             device = 'GPU' if cuda else 'CPU'
             click.echo(click.style(f'{device} Run Time: {str(time.time() - runtime)} seconds', fg='green'))
@@ -68,7 +76,7 @@ def set_tensorflow_random_seeds(seed):
     tf.random.set_seed(seed)
     tf.config.threading.set_intra_op_parallelism_threads = 1  # CPU only
     tf.config.threading.set_inter_op_parallelism_threads = 1  # CPU only
-    os.environ['TF_DETERMINISTIC_OPS'] = '1'
+    #os.environ['TF_DETERMINISTIC_OPS'] = '1'
 
 
 if __name__ == '__main__':
