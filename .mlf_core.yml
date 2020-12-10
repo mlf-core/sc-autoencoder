@@ -1,0 +1,18 @@
+domain: mlflow
+language: tensorflow
+project_slug: sc-autoencoder
+project_slug_no_hyphen: sc_autoencoder
+template_version: '1.0.2 # <<MLF-CORE_NO_BUMP>>'
+template_handle: mlflow-tensorflow
+github_username: mlf-core
+creator_github_username: zethson
+is_github_repo: true
+is_repo_private: false
+is_github_orga: true
+github_orga: mlf-core
+full_name: Lukas Heumos
+email: lukas.heumos@posteo.net
+project_name: sc-autoencoder
+project_short_description: An autoencoder for single cell data.
+version: 0.1.0-SNAPSHOT
+license: MIT

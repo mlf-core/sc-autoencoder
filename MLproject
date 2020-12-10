@@ -1,0 +1,30 @@
+# Author: Lukas Heumos
+# Email: lukas.heumos@posteo.net
+# Version: 0.1.0-SNAPSHOT
+# License: MIT
+
+
+name: sc-autoencoder
+
+# conda_env: environment.yml
+docker_env:
+  image: ghcr.io/mlf-core/sc_autoencoder:0.1.0-SNAPSHOT
+  volumes: ["${PWD}/data:/data"]
+
+entry_points:
+  main:
+    parameters:
+      cuda: {type: string, default: 'True'}
+      epochs: {type: int, default: 5}
+      general-seed: {type: int, default: 0}
+      tensorflow-seed: {type: int, default: 0}
+      batch-size: {type: int, default: 64}
+      learning-rate: {type: float, default: 0.01}
+    command: |
+          python sc_autoencoder/sc_autoencoder.py \
+            --cuda {cuda} \
+            --epochs {epochs} \
+            --general-seed {general-seed} \
+            --tensorflow-seed {tensorflow-seed} \
+            --batch-size {batch-size} \
+            --learning-rate {learning-rate} \
