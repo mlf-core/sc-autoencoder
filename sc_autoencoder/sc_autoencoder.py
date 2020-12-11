@@ -49,7 +49,6 @@ def start_training(cuda, epochs, general_seed, tensorflow_seed, batch_size, buff
         dataset, test_data = load_data(strategy, batch_size, buffer_size, tensorflow_seed)
 
         # Get the input dimension
-        # TODO: find a nicer, less ugly way of doing this
         input_dim = 0
         for elem in dataset:
             input_dim = elem[0].shape[1]
@@ -86,7 +85,7 @@ def set_tensorflow_random_seeds(seed):
     tf.random.set_seed(seed)
     tf.config.threading.set_intra_op_parallelism_threads = 1  # CPU only
     tf.config.threading.set_inter_op_parallelism_threads = 1  # CPU only
-    #os.environ['TF_DETERMINISTIC_OPS'] = '1'
+    os.environ['TF_DETERMINISTIC_OPS'] = '1'
 
 
 if __name__ == '__main__':
