@@ -15,11 +15,12 @@ entry_points:
   main:
     parameters:
       cuda: {type: string, default: 'True'}
-      epochs: {type: int, default: 50}
+      epochs: {type: int, default: 1000}
       general-seed: {type: int, default: 0}
       tensorflow-seed: {type: int, default: 0}
       batch-size: {type: int, default: 256}
-      learning-rate: {type: float, default: 0.01}
+      learning-rate: {type: float, default: 0.001}
+      mixed-precision: {type: string, default: 'False'}
     command: |
           python sc_autoencoder/sc_autoencoder.py \
             --cuda {cuda} \
@@ -28,3 +29,4 @@ entry_points:
             --tensorflow-seed {tensorflow-seed} \
             --batch-size {batch-size} \
             --learning-rate {learning-rate} \
+            --mixed-precision {mixed-precision}

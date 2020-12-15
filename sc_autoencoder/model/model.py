@@ -35,5 +35,5 @@ class Autoencoder(tf.keras.Model):
     
 
 def create_model(input_shape):
-    model = Autoencoder(input_dim=input_shape, layer_sizes=[256, 128, 64], latent_size=50)
+    model = Autoencoder(input_dim=input_shape, layer_sizes=[256, 128, 64], latent_size=32)
     return model

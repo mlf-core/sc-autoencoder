@@ -11,7 +11,7 @@ from mlf_core.mlf_core import log_sys_intel_conda_env, set_general_random_seeds
 from data_loading.data_loader import load_data
 from model.model import create_model
 from training.train import train, test
-from tensorflow.keras.mixed_precision import experimental as mixed_precision
+from tensorflow.keras.mixed_precision import experimental as mp
 
 
 @click.command()
@@ -30,8 +30,8 @@ def start_training(cuda, epochs, general_seed, tensorflow_seed, batch_size, buff
 
     # Enable mixed precision training
     if mixed_precision:
-        policy = mixed_precision.Policy('mixed_float16')
-        mixed_precision.set_policy(policy)
+        policy = mp.Policy('mixed_float16')
+        mp.set_policy(policy)
 
     with mlflow.start_run():
         # Enable the logging of all parameters, metrics and models to mlflow and Tensorboard
@@ -49,13 +49,13 @@ def start_training(cuda, epochs, general_seed, tensorflow_seed, batch_size, buff
         dataset, test_data = load_data(strategy, batch_size, buffer_size, tensorflow_seed)
 
         # Get the input dimension
-        # TODO: find a nicer, less ugly way of doing this
         input_dim = 0
         for elem in dataset:
             input_dim = elem[0].shape[1]
             break
 
         with strategy.scope():
+
             # Define model and compile model
             model = create_model(input_shape=input_dim)
             model.compile(loss=tf.keras.losses.MeanSquaredError(),
