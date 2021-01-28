@@ -33,6 +33,10 @@ Features
 * MLF-CORE TODO: Write features here
 
 
+.. image:: docs/images/autoencoder_architecture.png
+        :alt: Autoencoder architecture
+
+
 Credits
 -------
 
