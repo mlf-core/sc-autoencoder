@@ -26,11 +26,8 @@ An autoencoder for single cell data.
 * Documentation: https://sc-autoencoder.readthedocs.io.
 
 
-Features
---------
-
-* Fully reproducible mlf-core Tensorflow model
-* MLF-CORE TODO: Write features here
+Architecture
+------------
 
 
 .. image:: docs/images/autoencoder_architecture.png
