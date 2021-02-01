@@ -1,4 +1,0 @@
-artifact_location: file:///home/kevin/qbic/mlf_core_project/mlruns/3
-experiment_id: '3'
-lifecycle_stage: active
-name: cpu_random

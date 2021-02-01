@@ -1,4 +1,0 @@
-artifact_location: file:///home/kevin/qbic/mlf_core_project/mlruns/4
-experiment_id: '4'
-lifecycle_stage: active
-name: gpu_deterministic

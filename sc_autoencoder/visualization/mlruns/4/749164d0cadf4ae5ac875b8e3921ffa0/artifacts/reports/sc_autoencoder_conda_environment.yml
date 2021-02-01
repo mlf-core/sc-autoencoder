@@ -1,4 +1,0 @@
-name: sc_autoencoder
-channels:
-  - defaults
-prefix: /home/user/miniconda/envs/sc_autoencoder
