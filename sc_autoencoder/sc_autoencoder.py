@@ -56,7 +56,7 @@ def start_training(cuda, epochs, general_seed, tensorflow_seed, batch_size, buff
 
         with strategy.scope():
 
-            # Define model and compile model
+            # Define and compile model
             model = create_model(input_shape=input_dim)
             model.compile(loss=tf.keras.losses.MeanSquaredError(),
                           optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate),
@@ -69,7 +69,6 @@ def start_training(cuda, epochs, general_seed, tensorflow_seed, batch_size, buff
             embedding = test(model, test_data, save_path="embedding.png")
             mlflow.log_artifact(embedding + ".png")
             mlflow.log_artifact(embedding + ".csv")
-
 
             device = 'GPU' if cuda else 'CPU'
             click.echo(click.style(f'{device} Run Time: {str(time.time() - runtime)} seconds', fg='green'))
