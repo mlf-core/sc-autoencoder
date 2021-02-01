@@ -35,6 +35,7 @@ Features
 
 .. image:: docs/images/autoencoder_architecture.png
         :width: 200
+        :scale: 50 %
         :alt: Autoencoder architecture
 
 
