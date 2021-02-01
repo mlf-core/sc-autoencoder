@@ -1,0 +1,15 @@
+artifact_uri: file:///home/kevin/qbic/mlf_core_project/mlruns/3/46c1c9cd51b047c5a9b01c4235e06f93/artifacts
+end_time: 1607613202885
+entry_point_name: ''
+experiment_id: '3'
+lifecycle_stage: active
+name: ''
+run_id: 46c1c9cd51b047c5a9b01c4235e06f93
+run_uuid: 46c1c9cd51b047c5a9b01c4235e06f93
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1607612952354
+status: 3
+tags: []
+user_id: kevin

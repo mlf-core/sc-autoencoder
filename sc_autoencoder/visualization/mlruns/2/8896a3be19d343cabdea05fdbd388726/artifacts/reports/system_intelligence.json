@@ -1,0 +1,127 @@
+{
+  "cpu": {
+    "vendor_id_raw": "AuthenticAMD",
+    "hardware_raw": null,
+    "brand_raw": "AMD Ryzen 5 2600X Six-Core Processor",
+    "arch": "X86_64",
+    "logical_cores": "12",
+    "physical_cores": "6",
+    "clock": "2189.9855833333336 MHz",
+    "clock_min": "2200.0 MHz",
+    "clock_max": "3600.0 MHz",
+    "cache": "{1: '33.55 MHz', 2: '536.87 MHz', 3: '536.87 MHz'}"
+  },
+  "gpus": [
+    {
+      "architecture": "Volta",
+      "brand": "GeForce RTX 2060",
+      "compute_capability": "7.5",
+      "memory": "5.79 GB",
+      "memory_clock": "7 MHz",
+      "clock": "1.68 MHz",
+      "multiprocessors": "30",
+      "cores": "1920",
+      "warp_size": "32"
+    }
+  ],
+  "ram": {
+    "total": 16801517568,
+    "banks": {},
+    "cache": {}
+  },
+  "host": "476d57ff6f6c",
+  "os": "Linux-5.4.0-56-generic-x86_64-with-debian-buster-sid",
+  "hdd": {
+    "model": {
+      "/dev/sda": {
+        "size": 468862128,
+        "model": "TEAM T2535T240G "
+      },
+      "/dev/sdb": {
+        "size": 1953525168,
+        "model": "TOSHIBA HDWD110 "
+      },
+      "/dev/sdc": {
+        "size": 976773168,
+        "model": "Samsung SSD 860 "
+      }
+    },
+    "usage": {
+      "/dev/sdc2": {
+        "total": "456.96 GB",
+        "used": "47.22 GB",
+        "free": "386.46 GB",
+        "percentage": "10.9",
+        "fstype": "ext4",
+        "mountpoint": "/usr/lib/x86_64-linux-gnu/libnvidia-compiler.so.455.38"
+      }
+    }
+  },
+  "swap": 2147479552,
+  "network": {
+    "lo": {
+      "isup": "True",
+      "duplex": "NicDuplex.NIC_DUPLEX_UNKNOWN",
+      "speed": "0",
+      "mtu": "65536"
+    },
+    "eth0": {
+      "isup": "True",
+      "duplex": "NicDuplex.NIC_DUPLEX_FULL",
+      "speed": "10000",
+      "mtu": "1500"
+    }
+  },
+  "software": {
+    "gcc": {
+      "path": "/usr/bin/gcc",
+      "version": "gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0"
+    },
+    "g++": {
+      "path": "/usr/bin/g++",
+      "version": "g++ (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0"
+    },
+    "python": {
+      "path": "/home/user/miniconda/envs/sc-autoencoder/bin/python",
+      "version": "Python 3.7.7",
+      "packages": {
+        "h5py": {
+          "version": "h5py==2.10.0"
+        },
+        "numba": {
+          "version": "numba @ file:///tmp/build/80754af9/numba_1600102479638/work"
+        },
+        "numpy": {
+          "version": "numpy==1.18.5"
+        },
+        "pandas": {
+          "version": "pandas @ file:///tmp/build/80754af9/pandas_1602088128026/work"
+        },
+        "pycuda": {
+          "version": "pycuda==2019.1.2"
+        },
+        "scikit-learn": {
+          "version": "scikit-learn @ file:///tmp/build/80754af9/scikit-learn_1598376882706/work"
+        },
+        "scipy": {
+          "version": "scipy==1.4.1"
+        },
+        "tensorflow": {
+          "version": "tensorflow==2.3.0"
+        }
+      }
+    },
+    "pip": {
+      "path": "/home/user/miniconda/envs/sc-autoencoder/bin/pip",
+      "version": "pip 20.2.4 from /home/user/miniconda/envs/sc-autoencoder/lib/python3.7/site-packages/pip (python 3.7)"
+    },
+    "nvcc": {
+      "path": "/usr/local/cuda/bin/nvcc",
+      "version": "Cuda compilation tools, release 10.2, V10.2.89"
+    },
+    "mkl": {
+      "path": null,
+      "version": "Intel(R) Math Kernel Library Version 2020.0.2 Product Build 20200624 for Intel(R) 64 architecture applications"
+    }
+  }
+}

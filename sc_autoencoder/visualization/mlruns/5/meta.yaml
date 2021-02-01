@@ -1,0 +1,4 @@
+artifact_location: file:///home/kevin/qbic/mlf_core_project/mlruns/5
+experiment_id: '5'
+lifecycle_stage: active
+name: gpu_nd_mp
