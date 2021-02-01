@@ -20,14 +20,15 @@ sc-autoencoder
         :alt: Documentation Status
 
 An autoencoder for single cell data.
-
-
 * Free software: MIT
 * Documentation: https://sc-autoencoder.readthedocs.io.
 
+This project uses a autoencoder model to learn latent features from single-cell RNA-seq (scRNA-seq) data.
 
 Architecture
 ------------
+The model used in this project follows a standard encoder-encoding-decoder autoencoder architecture.
+We use layer sizes of 256, 128 and 64 for the encoder and decoder (in reverse) layers, and a encoding size of 32.
 
 
 .. image:: docs/images/autoencoder_architecture.png
