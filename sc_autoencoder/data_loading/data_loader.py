@@ -1,7 +1,5 @@
 import tensorflow as tf
-import tensorflow_datasets as tfds
 import scanpy as sc
-
 
 
 def preprocessing(adata):
@@ -9,7 +7,7 @@ def preprocessing(adata):
     sc.pp.filter_cells(adata, min_genes=200)
     sc.pp.filter_genes(adata, min_cells=3)
 
-    # Normalization and scaling: 
+    # Normalization and scaling:
     sc.pp.normalize_total(adata, target_sum=1e4)
     sc.pp.log1p(adata)
 

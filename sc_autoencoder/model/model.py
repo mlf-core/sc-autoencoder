@@ -32,7 +32,6 @@ class Autoencoder(tf.keras.Model):
             tf.keras.layers.Dense(self.input_dim,     activation="linear", name="out_layer")
         ])
 
-
     def call(self, x):
         encoded = self.encoder(x)
         return self.decoder(encoded)
