@@ -23,7 +23,8 @@ from tensorflow.keras.mixed_precision import experimental as mp
 @click.option('--buffer-size', type=int, default=10000, help='Buffer size for Mirrored Training')
 @click.option('--learning-rate', type=float, default=0.01, help='Learning rate')
 @click.option('--mixed-precision', type=bool, default=False, help="Enable mixed precision training")
-def start_training(cuda, epochs, general_seed, tensorflow_seed, batch_size, buffer_size, learning_rate, mixed_precision):
+@click.option('--deterministic', type=str, default='1', help="Deterministic GPU settings. '1' is deterministic, '0' not.")
+def start_training(cuda, epochs, general_seed, tensorflow_seed, batch_size, buffer_size, learning_rate, mixed_precision, deterministic):
     # Disable GPU support if no GPUs are supposed to be used
     if not cuda:
         tf.config.set_visible_devices([], 'GPU')
@@ -39,7 +40,7 @@ def start_training(cuda, epochs, general_seed, tensorflow_seed, batch_size, buff
 
         # Fix all random seeds and Tensorflow specific reproducibility settings
         set_general_random_seeds(general_seed)
-        set_tensorflow_random_seeds(tensorflow_seed)
+        set_tensorflow_random_seeds(tensorflow_seed, deterministic)
 
         # Use Mirrored Strategy for multi GPU support
         strategy = tf.distribute.MirroredStrategy()
@@ -56,7 +57,7 @@ def start_training(cuda, epochs, general_seed, tensorflow_seed, batch_size, buff
 
         with strategy.scope():
 
-            # Define model and compile model
+            # Define and compile model
             model = create_model(input_shape=input_dim)
             model.compile(loss=tf.keras.losses.MeanSquaredError(),
                           optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate),
@@ -70,7 +71,6 @@ def start_training(cuda, epochs, general_seed, tensorflow_seed, batch_size, buff
             mlflow.log_artifact(embedding + ".png")
             mlflow.log_artifact(embedding + ".csv")
 
-
             device = 'GPU' if cuda else 'CPU'
             click.echo(click.style(f'{device} Run Time: {str(time.time() - runtime)} seconds', fg='green'))
 
@@ -81,11 +81,11 @@ def start_training(cuda, epochs, general_seed, tensorflow_seed, batch_size, buff
                                    fg='blue'))
 
 
-def set_tensorflow_random_seeds(seed):
+def set_tensorflow_random_seeds(seed, deterministic):
     tf.random.set_seed(seed)
     tf.config.threading.set_intra_op_parallelism_threads = 1  # CPU only
     tf.config.threading.set_inter_op_parallelism_threads = 1  # CPU only
-    os.environ['TF_DETERMINISTIC_OPS'] = '1'
+    os.environ['TF_DETERMINISTIC_OPS'] = deterministic
 
 
 if __name__ == '__main__':

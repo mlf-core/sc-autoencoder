@@ -133,3 +133,6 @@ dmypy.json
 
 # visual studio code
 .vscode
+
+# preliminary exclusion of results
+mlruns

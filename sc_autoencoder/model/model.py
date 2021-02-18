@@ -2,6 +2,13 @@ import tensorflow as tf
 
 
 class Autoencoder(tf.keras.Model):
+    """
+    Autoencoder Model for single-cell RNA-seq data
+
+    :param input_dim:       The dimension of the input data (number of genes)
+    :param layer_sizes:     A list of size 3 with the layer sizes of encoder and decoder
+    :param latent_size:     The size of the latent (bottleneck) dimension
+    """
 
     def __init__(self, input_dim, layer_sizes, latent_size):
         super(Autoencoder, self).__init__()
@@ -25,14 +32,13 @@ class Autoencoder(tf.keras.Model):
             tf.keras.layers.Dense(self.input_dim,     activation="linear", name="out_layer")
         ])
 
-    
     def call(self, x):
         encoded = self.encoder(x)
         return self.decoder(encoded)
-    
+
     def encode(self, x):
         return self.encoder(x)
-    
+
 
 def create_model(input_shape):
     model = Autoencoder(input_dim=input_shape, layer_sizes=[256, 128, 64], latent_size=32)
