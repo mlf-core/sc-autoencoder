@@ -20,12 +20,13 @@ sc-autoencoder
         :alt: Documentation Status
 
 An autoencoder for single cell data.
+
 * Free software: MIT
 * Documentation: https://sc-autoencoder.readthedocs.io.
 
 This project uses an autoencoder model to learn latent features from single-cell RNA-seq (scRNA-seq) data. Autoencoder models
-and similar architectures are frequently used for scRNA-seq data. For instance, Eraslan et al. used an `autoencoder <https://www.nature.com/articles/s41467-018-07931-2>` for denoising
-of single cell data. In another study, Lotfollahi et al use a `variational autoencoder <https://www.nature.com/articles/s41592-019-0494-8>` to predict perturbation responses.
+and similar architectures are frequently used for scRNA-seq data. For instance, Eraslan et al. used an `autoencoder <https://www.nature.com/articles/s41467-018-07931-2>`_ for denoising
+of single cell data. In another study, Lotfollahi et al use a `variational autoencoder <https://www.nature.com/articles/s41592-019-0494-8>`_ to predict perturbation responses.
 Here, we have implemented a very simple autoencoder to demonstrate how non-deterministic operations can lead to significant differences in latent space embeddings which affect
 downstream analysis and hinder reproducibility.
 
@@ -38,7 +39,6 @@ We use layer sizes of 256, 128 and 64 for the encoder and decoder (in reverse) l
 .. image:: docs/images/autoencoder_architecture.png
         :alt: Autoencoder architecture
         :scale: 10
-
 
 
 Credits
