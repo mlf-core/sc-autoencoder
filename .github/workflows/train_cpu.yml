@@ -1,4 +1,4 @@
-name: Train sc_autoencoder using CPU
+name: Train sc-autoencoder using CPU
 
 on: [push, pull_request]
 
@@ -30,4 +30,4 @@ jobs:
         run: pip install mlflow
 
       - name: Train on the CPU
-        run: mlflow run . -P epochs=2
+        run: mlflow run . -P max_epochs=2
