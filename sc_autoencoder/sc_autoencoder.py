@@ -7,9 +7,12 @@ import time
 from rich import traceback, print
 
 from mlf_core.mlf_core import MLFCore
-from data_loading.data_loader import load_train_test_data
+from rich import traceback
+from mlf_core.mlf_core import log_sys_intel_conda_env, set_general_random_seeds
+from data_loading.data_loader import load_data
 from model.model import create_model
 from training.train import train, test
+from tensorflow.keras.mixed_precision import experimental as mp
 
 
 def start_training():
@@ -58,9 +61,15 @@ def start_training():
     )
     args = parser.parse_args()
     dict_args = vars(args)
+
     # Disable GPU support if no GPUs are supposed to be used
     if not dict_args['cuda']:
         tf.config.set_visible_devices([], 'GPU')
+
+    # Enable mixed precision training
+    if mixed_precision:
+        policy = mp.Policy('mixed_float16')
+        mp.set_policy(policy)
 
     with mlflow.start_run():
         # Enable the logging of all parameters, metrics and models to mlflow and Tensorboard
@@ -78,28 +87,46 @@ def start_training():
         print(f'[bold blue]Number of devices: {strategy.num_replicas_in_sync}')
 
         # Fetch and prepare dataset
-        train_dataset, eval_dataset = load_train_test_data(strategy, dict_args['batch_size'], dict_args['buffer_size'], dict_args['tensorflow_seed'])
 
-        # TODO MLF-CORE: Enable input data logging
-        # MLFCore.log_input_data('data/')
+        dataset, test_data = load_data(strategy, dict_args['batch_size'], dict_args['buffer_size'], dict_args['tensorflow_seed'])
+
+        # Get the input dimension
+        input_dim = 0
+        for elem in dataset:
+            input_dim = elem[0].shape[1]
+            break
 
         with strategy.scope():
-            # Define model and compile model
-            model = create_model(input_shape=(28, 28, 1))
-            model.compile(loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-                          optimizer=tf.keras.optimizers.Adam(learning_rate=dict_args['lr']),
-                          metrics=['accuracy'])
 
+            # Define and compile model
+            model = create_model(input_shape=input_dim)
+            model.compile(loss=tf.keras.losses.MeanSquaredError(),
+                          optimizer=tf.keras.optimizers.Adam(learning_rate=dict_args['lr']),
+                          metrics=['mse'])
+
+            model.build(input_shape=(batch_size, input_dim))
             # Train and evaluate the trained model
             runtime = time.time()
-            train(model, dict_args['max_epochs'], train_dataset)
-            eval_loss, eval_acc = test(model, eval_dataset)
-            print(f'Test loss: {eval_loss}, Test Accuracy: {eval_acc}')
+
+            train(model, epochs, dataset)
+            embedding = test(model, test_data, save_path="embedding.png")
+            mlflow.log_artifact(embedding + ".png")
+            mlflow.log_artifact(embedding + ".csv")
+
+            device = 'GPU' if cuda else 'CPU'
+            click.echo(click.style(f'{device} Run Time: {str(time.time() - runtime)} seconds', fg='green'))
+
+            # Log hardware and software
+            log_sys_intel_conda_env()
+
+            click.echo(click.style(f'\nLaunch TensorBoard with:\ntensorboard --logdir={os.path.join(mlflow.get_artifact_uri(), "tensorboard_logs", "train")}',
+                                   fg='blue'))
 
             device = 'GPU' if dict_args['cuda'] else 'CPU'
             print(f'[bold green]{device} Run Time: {str(time.time() - runtime)} seconds')
 
             print(f'[bold blue]\nLaunch TensorBoard with:\ntensorboard --logdir={os.path.join(mlflow.get_artifact_uri(), "tensorboard_logs", "train")}')
+
 
 
 if __name__ == '__main__':
