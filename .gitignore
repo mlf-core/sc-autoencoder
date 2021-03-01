@@ -136,4 +136,4 @@ dmypy.json
 
 # preliminary exclusion of results
 mlruns
-
+.DS_STORE
