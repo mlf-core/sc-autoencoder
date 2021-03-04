@@ -3,15 +3,15 @@ sc-autoencoder
 ==============
 
 .. image:: https://github.com/mlf-core/sc-autoencoder/workflows/Train%20sc-autoencoder%20using%20CPU/badge.svg
-        :target: https://github.com/mlf-core/sc-autoencoder/workflows/Train%20sc-autoencoder%20using%20CPU/badge.svg
+        :target: https://github.com/mlf-core/sc-autoencoder/actions?query=workflow%3A%22Train+sc-autoencoder+using+CPU%22
         :alt: Github Workflow CPU Training sc-autoencoder Status
 
 .. image:: https://github.com/mlf-core/sc-autoencoder/workflows/Publish%20Container%20to%20Docker%20Packages/badge.svg
-        :target: https://github.com/mlf-core/sc-autoencoder/workflows/Publish%20Container%20to%20Docker%20Packages/badge.svg
+        :target: https://github.com/mlf-core/sc-autoencoder/actions?query=workflow%3A%22Publish+Container+to+Docker+Packages%22
         :alt: Publish Container to Docker Packages
 
-.. image:: https://github.com/mlf-core/sc-autoencoder/workflows/mlf-core%20lint/badge.svg
-        :target: https://github.com/mlf-core/sc-autoencoder/workflows/mlf-core%20lint/badge.svg
+.. image:: https://github.com/mlf-core/sc-autoencoder/workflows/mlf-core%20linting/badge.svg
+        :target: https://github.com/mlf-core/sc-autoencoder/actions?query=workflow%3A%22mlf-core+lint%22
         :alt: mlf-core lint
 
 
