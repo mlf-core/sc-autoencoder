@@ -5,7 +5,7 @@ COPY environment.yml .
 RUN conda env create -f environment.yml && conda clean -a
 
 # Activate the environment
-RUN echo "source activate sc_autoencoder" >> ~/.bashrc
+RUN echo "source activate sc-autoencoder" >> ~/.bashrc
 ENV PATH /home/user/miniconda/envs/sc_autoencoder/bin:$PATH
 
 # Dump the details of the installed packages to a file for posterity

@@ -4,8 +4,6 @@ import mlflow
 import mlflow.tensorflow
 import os
 import time
-from rich import traceback, print
-
 from mlf_core.mlf_core import MLFCore
 from rich import traceback
 from data_loading.data_loader import load_data
