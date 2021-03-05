@@ -1,4 +1,4 @@
-name: sc-autoencoder
+name: sc_autoencoder
 channels:
     - defaults
     - conda-forge
@@ -20,9 +20,8 @@ dependencies:
     - pandas
     - pip
     - pip:
-      - tensorflow==2.4.1  # not yet on Conda with full GPU support
-      - tensorflow_datasets==4.2.0
-      - pycuda==2019.1.2  # not on Conda
-      - system-intelligence==2.0.2  # not yet on Conda
-      - scanpy==1.6.0
-      
+          - tensorflow==2.4.1 # not yet on Conda with full GPU support
+          - tensorflow_datasets==4.2.0
+          - pycuda==2019.1.2 # not on Conda
+          - system-intelligence==2.0.2 # not yet on Conda
+          - scanpy==1.6.0
