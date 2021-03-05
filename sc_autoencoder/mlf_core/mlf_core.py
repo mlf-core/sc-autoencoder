@@ -49,11 +49,11 @@ class MLFCore:
         mlflow.log_artifact(f'{reports_output_dir}/sc_autoencoder_conda_environment.yml', artifact_path='reports')
 
     @staticmethod
-    def set_tensorflow_random_seeds(seed):
+    def set_tensorflow_random_seeds(seed, deterministic='1'):
         tf.random.set_seed(seed)
         tf.config.threading.set_intra_op_parallelism_threads = 1  # CPU only
         tf.config.threading.set_inter_op_parallelism_threads = 1  # CPU only
-        os.environ['TF_DETERMINISTIC_OPS'] = '1'
+        os.environ['TF_DETERMINISTIC_OPS'] = deterministic
 
     @classmethod
     def log_sys_intel_conda_env(cls):

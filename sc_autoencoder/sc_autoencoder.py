@@ -8,7 +8,6 @@ from rich import traceback, print
 
 from mlf_core.mlf_core import MLFCore
 from rich import traceback
-from mlf_core.mlf_core import log_sys_intel_conda_env, set_general_random_seeds
 from data_loading.data_loader import load_data
 from model.model import create_model
 from training.train import train, test
@@ -59,6 +58,18 @@ def start_training():
         default=0.01,
         help='Learning rate',
     )
+    parser.add_argument(
+        '--mixed-precision',
+        type=bool,
+        default=False,
+        help='Use mixed-prexicision training'
+    )
+    parser.add_argument(
+        '--deterministic',
+        type=str,
+        default='1',
+        help='Use GPU deterministic training'
+    )
     args = parser.parse_args()
     dict_args = vars(args)
 
@@ -67,7 +78,7 @@ def start_training():
         tf.config.set_visible_devices([], 'GPU')
 
     # Enable mixed precision training
-    if mixed_precision:
+    if dict_args['mixed_precision']:
         policy = mp.Policy('mixed_float16')
         mp.set_policy(policy)
 
@@ -80,7 +91,7 @@ def start_training():
 
         # Fix all random seeds and Tensorflow specific reproducibility settings
         MLFCore.set_general_random_seeds(dict_args["general_seed"])
-        MLFCore.set_tensorflow_random_seeds(dict_args["tensorflow_seed"])
+        MLFCore.set_tensorflow_random_seeds(dict_args["tensorflow_seed"], deterministic=dict_args['deterministic'])
 
         # Use Mirrored Strategy for multi GPU support
         strategy = tf.distribute.MirroredStrategy()
@@ -104,29 +115,21 @@ def start_training():
                           optimizer=tf.keras.optimizers.Adam(learning_rate=dict_args['lr']),
                           metrics=['mse'])
 
-            model.build(input_shape=(batch_size, input_dim))
+            model.build(input_shape=(dict_args['batch_size'], input_dim))
             # Train and evaluate the trained model
             runtime = time.time()
 
-            train(model, epochs, dataset)
+            train(model, dict_args['max_epochs'], dataset)
             embedding = test(model, test_data, save_path="embedding.png")
             mlflow.log_artifact(embedding + ".png")
             mlflow.log_artifact(embedding + ".csv")
 
-            device = 'GPU' if cuda else 'CPU'
-            click.echo(click.style(f'{device} Run Time: {str(time.time() - runtime)} seconds', fg='green'))
-
-            # Log hardware and software
-            log_sys_intel_conda_env()
-
-            click.echo(click.style(f'\nLaunch TensorBoard with:\ntensorboard --logdir={os.path.join(mlflow.get_artifact_uri(), "tensorboard_logs", "train")}',
-                                   fg='blue'))
+            print(f'[bold blue]\nLaunch TensorBoard with:\ntensorboard --logdir={os.path.join(mlflow.get_artifact_uri(), "tensorboard_logs", "train")}')
 
             device = 'GPU' if dict_args['cuda'] else 'CPU'
             print(f'[bold green]{device} Run Time: {str(time.time() - runtime)} seconds')
 
             print(f'[bold blue]\nLaunch TensorBoard with:\ntensorboard --logdir={os.path.join(mlflow.get_artifact_uri(), "tensorboard_logs", "train")}')
-
 
 
 if __name__ == '__main__':

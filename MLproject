@@ -16,11 +16,11 @@ entry_points:
     parameters:
       cuda: {type: string, default: 'True'}
 
-      epochs: {type: int, default: 1000}
+      max_epochs: {type: int, default: 1000}
       general-seed: {type: int, default: 0}
       tensorflow-seed: {type: int, default: 0}
       batch-size: {type: int, default: 256}
-      learning-rate: {type: float, default: 0.001}
+      lr: {type: float, default: 0.001}
       mixed-precision: {type: string, default: 'False'}
       deterministic: {type: string, default: '1'}
 
