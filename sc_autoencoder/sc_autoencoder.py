@@ -89,6 +89,7 @@ def start_training():
 
         # Fix all random seeds and Tensorflow specific reproducibility settings
         MLFCore.set_general_random_seeds(dict_args["general_seed"])
+        MLFCore.set_tensorflow_random_seeds(dict_args["tensorflow_seed"])
         MLFCore.set_tensorflow_random_seeds(dict_args["tensorflow_seed"], deterministic=dict_args['deterministic'])
 
         # Use Mirrored Strategy for multi GPU support
