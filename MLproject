@@ -1,6 +1,6 @@
 # Author: Lukas Heumos
 # Email: lukas.heumos@posteo.net
-# Version: 0.1.0-SNAPSHOT
+# Version: 1.0.0
 # License: MIT
 
 
@@ -8,7 +8,7 @@ name: sc-autoencoder
 
 # conda_env: environment.yml
 docker_env:
-  image: ghcr.io/mlf-core/sc_autoencoder:0.1.0-SNAPSHOT
+  image: ghcr.io/mlf-core/sc_autoencoder:1.0.0
   volumes: ["${PWD}/data:/data"]
 
 entry_points:
